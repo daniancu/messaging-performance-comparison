@@ -53,11 +53,8 @@ public final class NettyClient implements Sender {
                         if (sslCtx != null) {
                             p.addLast(sslCtx.newHandler(ch.alloc(), host, PORT));
                         }
-
                         p.addLast("frameEncoder", new LengthFieldPrepender(4));
-                        p.addLast("bytesEncoder", new ByteArrayEncoder());
                         p.addLast(clientHandler);
-
                     }
                 });
 
@@ -70,7 +67,7 @@ public final class NettyClient implements Sender {
     @Override
     public void send(byte[] message) {
         try {
-            channel.writeAndFlush(message).sync();
+            channel.writeAndFlush(channel.alloc().buffer(message.length).writeBytes(message)).sync();
         } catch (InterruptedException e) {
             throw new RuntimeException("send error", e);
         }

@@ -11,6 +11,6 @@ In root folder
 
 **How to run the client**
 
-`java -cp orbit-messaging-benchmarks-test/target/orbit-messaging-benchmarks-test-1.0-SNAPSHOT-[netty|mina|grizzly].jar cloud.orbit.messaging.test.app.Server [hostname]`
+`java -cp orbit-messaging-benchmarks-test/target/orbit-messaging-benchmarks-test-1.0-SNAPSHOT-[netty|mina|grizzly].jar cloud.orbit.messaging.test.app.Client [hostname]`
 
 
