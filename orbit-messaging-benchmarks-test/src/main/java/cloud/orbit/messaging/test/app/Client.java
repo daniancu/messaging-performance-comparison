@@ -4,9 +4,9 @@ import cloud.orbit.messaging.test.api.PayloadGenerator;
 import cloud.orbit.messaging.test.api.Sender;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
-import org.jvnet.hk2.annotations.Service;
 
 import javax.inject.Inject;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,8 +23,8 @@ public class Client {
         sender.disconnect();
     }
 
-    public void init() {
-        sender.connect();
+    public void init(String[] args) {
+        sender.connect(args.length > 0 ? args[0] : "localhost");
     }
 
     public void benchmark() {
@@ -52,10 +52,12 @@ public class Client {
             Client client = locator.create(Client.class);
             locator.inject(client);
 
-            client.init();
+            client.init(args);
+            Thread.sleep(3000);
+
             client.benchmark();
 
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             client.stop();
         } catch (Exception e) {
             e.printStackTrace();

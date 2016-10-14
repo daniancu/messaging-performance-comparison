@@ -17,6 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jar.name>${project.artifactId}-${project.version}-unknown.jar</jar.name>
     </properties>
 
     <dependencies>
@@ -45,6 +46,9 @@
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
+            <properties>
+                <jar.name>${project.artifactId}-${project.version}-grizzly</jar.name>
+            </properties>
         </profile>
         <profile>
             <id>netty</id>
@@ -55,6 +59,9 @@
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
+            <properties>
+                <jar.name>${project.artifactId}-${project.version}-netty</jar.name>
+            </properties>
         </profile>
         <profile>
             <id>mina</id>
@@ -65,6 +72,9 @@
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
+            <properties>
+                <jar.name>${project.artifactId}-${project.version}-mina</jar.name>
+            </properties>
         </profile>
     </profiles>
     <build>
@@ -107,6 +117,13 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>${jar.name}</finalName>
+                </configuration>
             </plugin>
         </plugins>
     </build>

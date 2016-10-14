@@ -13,7 +13,7 @@ public class OneMegaPayload implements PayloadGenerator {
 
     private static final byte[] payload = "simple payload data".getBytes(Charset.forName("UTF-8"));
     private long generated = 0;
-    private final long oneMB = 1024 * 1024;
+    private final long oneMB = 10 * 1024 * 1024;
 
     @Override
     public boolean hasNext() {

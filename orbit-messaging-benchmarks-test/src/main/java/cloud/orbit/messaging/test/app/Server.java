@@ -16,6 +16,7 @@ public class Server {
     @Inject
     Receiver receiver;
 
+
     public static void main(String[] args) {
         ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator();
 
@@ -24,8 +25,10 @@ public class Server {
 
         Server server = locator.create(Server.class);
         locator.inject(server);
-
+        PerformanceMonitor performanceMonitor = new PerformanceMonitor(receiver);
+        performanceMonitor.start();
         receiver.start(args);
+
 
     }
 }

@@ -1,21 +1,16 @@
 package cloud.orbit.messaging.test.mina;
 
 import cloud.orbit.messaging.test.api.Sender;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.jvnet.hk2.annotations.Service;
 
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A simple TCP client, write back to the client every received messages.
@@ -89,11 +84,11 @@ public class MinaClient extends IoHandlerAdapter implements Sender {
     }
 
     @Override
-    public void connect() {
+    public void connect(String host) {
         connector = new NioSocketConnector();
         connector.setHandler(this);
-        System.out.println(String.format("connecting to Mina server at %s on port %d", MinaServer.HOST, MinaServer.PORT));
-        ConnectFuture connFuture = connector.connect(new InetSocketAddress(MinaServer.HOST, MinaServer.PORT));
+        System.out.println(String.format("connecting to Mina server at %s on port %d", host, MinaServer.PORT));
+        ConnectFuture connFuture = connector.connect(new InetSocketAddress(host, MinaServer.PORT));
 
         connFuture.awaitUninterruptibly();
 

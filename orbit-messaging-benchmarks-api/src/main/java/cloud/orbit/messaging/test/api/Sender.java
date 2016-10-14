@@ -13,5 +13,5 @@ public interface Sender {
 
     void disconnect();
 
-    void connect();
+    void connect(String host);
 }

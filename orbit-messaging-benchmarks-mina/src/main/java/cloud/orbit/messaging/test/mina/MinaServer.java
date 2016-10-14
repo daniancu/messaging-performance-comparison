@@ -63,7 +63,7 @@ public class MinaServer extends IoHandlerAdapter implements Receiver {
         System.out.println("Session closed...");
 
         // Reinitialize the counter and expose the number of received messages
-        System.out.println("Nb message received : " + byteCounter);
+        System.out.println("server stats : " + byteCounter);
 
     }
 
@@ -85,5 +85,25 @@ public class MinaServer extends IoHandlerAdapter implements Receiver {
         }
 
         System.out.println("Mina server started");
+    }
+
+    @Override
+    public long getMessageCount() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public long getTransferredBytes() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public void stop() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public long getActiveClients() {
+        throw new UnsupportedOperationException("not implemented");
     }
 }

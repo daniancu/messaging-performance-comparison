@@ -25,6 +25,6 @@ public class ByteCounter {
 
     @Override
     public String toString() {
-        return "bytes=" + bytes + ", counts=" + counts;
+        return "bytes=" + bytes + ", reads=" + counts;
     }
 }

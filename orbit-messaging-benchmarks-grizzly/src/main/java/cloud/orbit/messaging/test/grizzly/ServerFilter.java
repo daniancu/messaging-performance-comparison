@@ -17,6 +17,13 @@ import java.nio.ByteBuffer;
 public class ServerFilter extends BaseFilter {
 
     private long receivedBytes = 0;
+    private int msgs = 0;
+
+    @Override
+    public NextAction handleClose(FilterChainContext ctx) throws IOException {
+        System.out.println(String.format("got %d bytes in %d reads", receivedBytes, msgs));
+        return ctx.getStopAction();
+    }
 
     /**
      * Handle just read operation, when some message has come and ready to be
@@ -38,6 +45,7 @@ public class ServerFilter extends BaseFilter {
 //        System.out.println("msg = " + msg);
 
         receivedBytes += bytes;
+        msgs++;
 //        System.out.println("receivedBytes = " + receivedBytes);
         return ctx.getStopAction();
     }

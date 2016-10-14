@@ -30,6 +30,26 @@ public class GrizzlyServer implements Receiver{
         }
     }
 
+    @Override
+    public long getMessageCount() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public long getTransferredBytes() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public void stop() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public long getActiveClients() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
     public void startGrizzly(String[] args) throws IOException {
         // Create a FilterChain using FilterChainBuilder
         FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();

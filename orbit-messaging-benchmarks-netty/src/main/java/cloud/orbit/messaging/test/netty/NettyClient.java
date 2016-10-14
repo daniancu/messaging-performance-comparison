@@ -2,12 +2,10 @@ package cloud.orbit.messaging.test.netty;
 
 import cloud.orbit.messaging.test.api.Sender;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
@@ -16,13 +14,14 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.jvnet.hk2.annotations.Service;
 
-import java.util.concurrent.TimeUnit;
+import javax.inject.Scope;
+import javax.inject.Singleton;
 
 @Service(name = "NettySender")
 public final class NettyClient implements Sender {
 
     static final boolean SSL = false;
-    static final String HOST = System.getProperty("host", "localhost");
+
     static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
 //    static final int SIZE = Integer.parseInt(System.getProperty("size", "256"));
 
@@ -30,7 +29,7 @@ public final class NettyClient implements Sender {
     private Channel channel;
     private ClientHandler clientHandler = new ClientHandler();
 
-    public void setup() throws Exception {
+    public void setup(String host) throws Exception {
         // Configure SSL.git
         final SslContext sslCtx;
         if (SSL) {
@@ -52,21 +51,18 @@ public final class NettyClient implements Sender {
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
                         if (sslCtx != null) {
-                            p.addLast(sslCtx.newHandler(ch.alloc(), HOST, PORT));
+                            p.addLast(sslCtx.newHandler(ch.alloc(), host, PORT));
                         }
-                        //p.addLast(new LoggingHandler(LogLevel.INFO));
-                        p.addLast("bytesDecoder", new ByteArrayDecoder());
-//                        p.addLast("frameDecoder",
-//                                new LengthFieldBasedFrameDecoder(1048576, 0, 4, 0, 4));
-//                        p.addLast("frameEncoder", new LengthFieldPrepender(4));
+
+                        p.addLast("frameEncoder", new LengthFieldPrepender(4));
                         p.addLast("bytesEncoder", new ByteArrayEncoder());
                         p.addLast(clientHandler);
 
                     }
                 });
 
-        System.out.println(String.format("connecting to %s:%d",HOST, PORT));
-        channel= b.connect(HOST, PORT).sync().channel();
+        System.out.println(String.format("connecting to Netty server on %s, port %d ...", host, PORT));
+        channel= b.connect(host, PORT).sync().channel();
 
         System.out.println("connected to Netty server!");
     }
@@ -102,9 +98,9 @@ public final class NettyClient implements Sender {
     }
 
     @Override
-    public void connect() {
+    public void connect(String host) {
         try {
-            setup();
+            setup(host);
         } catch (Exception e) {
             throw new RuntimeException("could not connect to Netty server", e);
         }

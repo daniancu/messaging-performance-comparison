@@ -11,5 +11,11 @@ public interface Receiver {
 
     void start(String[] args);
 
+    long getMessageCount();
 
+    long getTransferredBytes();
+
+    void stop();
+
+    long getActiveClients();
 }
